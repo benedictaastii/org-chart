@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPQC Organization Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #f0f4f0;
+}
+
+/* =====================================================
+   PAGE
+===================================================== */
+.page {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    flex-direction: column;
+    background: linear-gradient(160deg, #f8fdf8 0%, #eef6ee 50%, #f5f9f5 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.page.active {
+    display: flex;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+.header {
+    height: 70px;
+    background: linear-gradient(90deg, #003d1f 0%, #005a2e 60%, #006b36 100%);
+    border-bottom: 3px solid #22c55e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+    box-shadow: 0 4px 20px rgba(0,69,38,0.3);
+}
+
+.logo {
+    position: absolute;
+    left: 24px;
+    height: 40px;
+}
+
+.logo-placeholder {
+    position: absolute;
+    left: 24px;
+    height: 40px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-wik {
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: 1px;
+}
+
+.logo-sub {
+    font-size: 9px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.3;
+}
+
+.title {
+    color: white;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* =====================================================
+   CLOCK
+===================================================== */
+.clock {
+    position: absolute;
+    right: 20px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    color: #004526;
+    min-width: 170px;
+}
+
+.clock-time {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 1px;
+}
+
+.clock-date {
+    font-size: 11px;
+    font-weight: 600;
+    color: #166534;
+    margin-top: 2px;
+}
+
+/* =====================================================
+   CONTENT WRAPPER
+===================================================== */
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 30px 42px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* =====================================================
+   ORG TREE — PAGE 1
+===================================================== */
+
+/* Level 1 — top node */
+.org-level1 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+/* Connector: level1 → level2 */
+.connector-v {
+    width: 3px;
+    background: linear-gradient(180deg, #16a34a, #22c55e);
+    align-self: center;
+}
+.connector-v.short { height: 24px; }
+.connector-v.medium { height: 32px; }
+
+.connector-h {
+    height: 3px;
+    background: linear-gradient(90deg, #16a34a, #22c55e, #16a34a);
+    border-radius: 2px;
+}
+
+/* Row wrapper for level 2 */
+.org-level2-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.org-level2-nodes {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+}
+
+.org-branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Level 3 row */
+.org-level3-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.org-level3-nodes {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: nowrap;
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+.card {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid #e2ede2;
+    box-shadow: 0 6px 20px rgba(0,80,40,0.08), 0 2px 6px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 14px 12px 12px;
+    position: relative;
+    transition: transform 0.25s, box-shadow 0.25s;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    border-radius: 14px 14px 0 0;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,80,40,0.14);
+}
+
+/* Level 1 card */
+.card-l1 {
+    width: 260px;
+    padding: 18px 16px 14px;
+}
+.card-l1::before { background: linear-gradient(90deg, #003d1f, #005a2e); }
+
+/* Level 2 card */
+.card-l2 {
+    width: 220px;
+}
+.card-l2::before { background: linear-gradient(90deg, #166534, #15803d); }
+
+/* Level 3 card (staff) */
+.card-l3 {
+    width: 185px;
+    padding: 12px 10px 10px;
+}
+.card-l3::before { background: linear-gradient(90deg, #16a34a, #22c55e); }
+
+/* =====================================================
+   PHOTO
+===================================================== */
+.photo {
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 3px solid white;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12), 0 0 0 2px #22c55e;
+    margin-bottom: 10px;
+    background: #e2ede2;
+    flex-shrink: 0;
+}
+
+.card-l1 .photo { width: 200px; height: 200x; } /* foto Brian Togu (top) */
+.card-l2 .photo { width: 150px; height: 150px; } /* foto Kevin & Roni */
+.card-l3 .photo { width: 120px; height: 120px; margin-bottom: 8px; } /* foto Staff & Inspector */
+
+/* =====================================================
+   TEXT
+===================================================== */
+.name {
+    font-weight: 700;
+    color: #0f2d0f;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+.card-l1 .name { font-size: 18px; }
+.card-l2 .name { font-size: 16px; }
+.card-l3 .name { font-size: 14px; }
+
+.position {
+    font-weight: 500;
+    color: #4a6b4a;
+    line-height: 1.3;
+}
+.card-l1 .position { font-size: 12px; }
+.card-l2 .position { font-size: 11px; }
+.card-l3 .position { font-size: 10px; }
+
+/* =====================================================
+   PAGE 2 & 3 TEAM LAYOUT
+===================================================== */
+.team-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    flex: 1;
+}
+
+.team-leader-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 60px; /* ubah gap antara semua inspector */
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+/* =====================================================
+   PAGE INDICATOR
+===================================================== */
+.page-indicator {
+    position: absolute;
+    bottom: 46px;
+    right: 30px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #c8dcc8;
+    transition: background 0.3s, transform 0.3s;
+}
+.dot.active {
+    background: #16a34a;
+    transform: scale(1.3);
+}
+
+.page-label {
+    background: rgba(22,101,52,0.1);
+    color: #166534;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-right: 6px;
+}
+
+/* =====================================================
+   RUNNING TEXT
+===================================================== */
+.running-text {
+    position: fixed;
+    bottom: 0; left: 0;
+    width: 100%;
+    height: 36px;
+    background: linear-gradient(90deg, #003d1f, #005a2e);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    z-index: 9999;
+    border-top: 2px solid rgba(34,197,94,0.4);
+}
+
+.running-text span {
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: marquee 22s linear infinite;
+    color: rgba(255,255,255,0.9);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+@keyframes marquee {
+    0%   { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* =====================================================
+   FADE IN ANIMATION
+===================================================== */
+.page.active .card {
+    animation: fadeUp 0.5s ease both;
+}
+.page.active .card:nth-child(1) { animation-delay: 0.05s; }
+.page.active .card:nth-child(2) { animation-delay: 0.12s; }
+.page.active .card:nth-child(3) { animation-delay: 0.19s; }
+.page.active .card:nth-child(4) { animation-delay: 0.26s; }
+.page.active .card:nth-child(5) { animation-delay: 0.33s; }
+.page.active .card:nth-child(6) { animation-delay: 0.40s; }
+.page.active .card:nth-child(7) { animation-delay: 0.47s; }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =====================================================
+   SEPARATOR LABEL (section header)
+===================================================== */
+.section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #4a7a4a;
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 20px;
+    padding: 3px 14px;
+    margin-bottom: 10px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- =====================================================
+   PAGE 1 — Engineering Org
+===================================================== -->
+<div class="page active" id="page-1">
+
+    <div class="header">
+        <div class="logo-placeholder">
+            <div class="logo-wik">WIK</div>
+            <div class="logo-sub">Technology<br>attuned to Nature</div>
+        </div>
+        <div class="title">ORGANISASI IPQC &amp; FA QUALITY</div>
+        <div class="clock" id="clock-1"></div>
+    </div>
+
+    <div class="content">
+
+        <!-- LEVEL 1: Quality Engineer -->
+        <div class="org-level1" style="margin-bottom:0">
+            <div class="card card-l1">
+                <img src="images/brian-togu.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                <div class="name">Brian Togu</div>
+                <div class="position">Sr. Quality Engineer · 11 Years</div>
+            </div>
+        </div>
+
+        <!-- V connector down -->
+        <div class="connector-v short"></div>
+
+        <!-- H connector spanning level-2 -->
+        <div style="display:flex; align-items:center; width:480px; margin-bottom:0">
+            <div style="flex:1; height:3px; background:linear-gradient(90deg,transparent,#16a34a)"></div>
+            <div style="width:3px; height:3px; background:#16a34a; border-radius:50%"></div>
+            <div style="flex:1; height:3px; background:linear-gradient(90deg,#16a34a,transparent)"></div>
+        </div>
+
+        <!-- LEVEL 2: Jr Engineers -->
+        <div style="display:flex; gap:180px; margin-bottom:0; align-items:flex-start;"> <!-- untuk ubah gap nya (level 2)) -->
+            <div class="org-branch">
+                <div class="connector-v short"></div>
+                <div class="card card-l2">
+                    <img src="images/putri.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Putri Rahmadani</div>
+                    <div class="position">Jr. Engineer · 1 Month</div>
+                </div>
+            </div>
+            <div class="org-branch">
+                <div class="connector-v short"></div>
+                <div class="card card-l2">
+                    <img src="images/roni.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Roni Ambarita</div>
+                    <div class="position">Jr. Leader · 6 Years</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- V connector down to staff -->
+        <div class="connector-v medium"></div>
+
+        <!-- H connector spanning level-3 -->
+        <div style="display:flex; align-items:center; width:1000px; margin-bottom:0">
+            <div style="flex:1; height:3px; background:linear-gradient(90deg,transparent,#22c55e)"></div>
+            <div style="width:3px; height:3px; background:#22c55e; border-radius:50%"></div>
+            <div style="flex:1; height:3px; background:linear-gradient(90deg,#22c55e,transparent)"></div>
+        </div>
+
+        <!-- LEVEL 3 -->
+        <div style="display:flex; gap:90px; align-items:flex-start; flex-wrap:nowrap;"> <!-- untuk ubah gap (level 3) -->
+
+            <div class="org-branch">
+                <div class="connector-v short"></div>
+                <div class="card card-l3">
+                    <img src="images/darma.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Darma Saputra</div>
+                    <div class="position">Inspector · 7 Years</div>
+                </div>
+            </div>
+            <div class="org-branch">
+                <div class="connector-v short"></div>
+                <div class="card card-l3">
+                    <img src="images/yoshua.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Yoshua Purba</div>
+                    <div class="position">Inspector · 2 Years</div>
+                </div>
+            </div>
+            
+            <div class="org-branch">
+                <div class="connector-v short"></div>
+                <div class="card card-l3">
+                    <img src="images/icha.jpg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Icha Ayu</div>
+                    <div class="position">Inspector · 3 Years</div>
+                </div>
+            </div>
+            <div class="org-branch">
+                <div class="connector-v short"></div>
+                <div class="card card-l3">
+                    <img src="images/asti.jpg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Benedikta Asti Daeli</div>
+                    <div class="position">Inspector · 6 Months</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page indicator -->
+        <div class="page-indicator">
+            <div class="page-label">Halaman 1 • Engineering</div>
+            <div class="dot active" id="dot-0"></div>
+            <div class="dot" id="dot-1"></div>
+            <div class="dot" id="dot-2"></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- =====================================================
+   PAGE 2 — Team Leader A
+===================================================== -->
+<div class="page" id="page-2">
+
+    <div class="header">
+        <div class="logo-placeholder">
+            <div class="logo-wik">WIK</div>
+            <div class="logo-sub">Technology<br>attuned to Nature</div>
+        </div>
+        <div class="title"> IPQC TEAM A</div>
+        <div class="clock" id="clock-2"></div>
+    </div>
+
+    <div class="content">
+        <div class="team-wrapper">
+
+            <!-- Leader -->
+            <div class="team-leader-area">
+                <div class="section-label">Team Leader</div>
+                <div class="card card-l1">
+                    <img src="images/jelita.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Jelita Marpaung</div>
+                    <div class="position">Team Leader · 13 Years</div>
+                </div>
+            </div>
+
+            <!-- Connector -->
+            <div class="connector-v" style="height:28px;"></div>
+            <div style="width:3px; height:3px; background:#22c55e; border-radius:50%; margin-bottom:8px;"></div>
+            <div class="section-label" style="margin-bottom:14px;">Inspectors</div>
+
+            <!-- Inspector grid -->
+            <div class="team-grid">
+                <div class="card card-l3">
+                    <img src="images/henna.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Hennawari</div>
+                    <div class="position">Inspector · 10 Years</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/rani.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Rani Widya Sari</div>
+                    <div class="position">Inspector · 2 Years</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/forensia.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Forenia F. Sitomorang</div>
+                    <div class="position">Inspector · 2 Years</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/rosa.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Rosalina Purba</div>
+                    <div class="position">Inspector · 2 Years</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/intan.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Intan Nona</div>
+                    <div class="position">Inspector · 1 Years</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/reo.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Reo Priandi Panjaitan</div>
+                    <div class="position">Inspector · 6 Months</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/tiara.jpg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Tiara Amelia Joeya</div>
+                    <div class="position">Inspector · 4 Months</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/karlina.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Karlina Novianti Nainggolan</div>
+                    <div class="position">Inspector · 1 Month</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-indicator">
+            <div class="page-label">Pages 2 • Team A</div>
+            <div class="dot" id="dot2-0"></div>
+            <div class="dot active" id="dot2-1"></div>
+            <div class="dot" id="dot2-2"></div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+   PAGE 3 — Team Leader B
+===================================================== -->
+<div class="page" id="page-3">
+
+    <div class="header">
+        <div class="logo-placeholder">
+            <div class="logo-wik">WIK</div>
+            <div class="logo-sub">Technology<br>attuned to Nature</div>
+        </div>
+        <div class="title">IPQC TEAM B</div>
+        <div class="clock" id="clock-3"></div>
+    </div>
+
+    <div class="content">
+        <div class="team-wrapper">
+
+            <!-- Leader -->
+            <div class="team-leader-area">
+                <div class="section-label">Team Leader</div>
+                <div class="card card-l1">
+                    <img src="images/nurhuda.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Nurhuda</div>
+                    <div class="position">Team Leader · 6 Years</div>
+                </div>
+            </div>
+
+            <!-- Connector -->
+            <div class="connector-v" style="height:28px;"></div>
+            <div style="width:3px; height:3px; background:#22c55e; border-radius:50%; margin-bottom:8px;"></div>
+            <div class="section-label" style="margin-bottom:14px;">Inspectors</div>
+
+            <!-- Inspector grid -->
+            <div class="team-grid">
+                <div class="card card-l3">
+                    <img src="images/netty.jpg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Netty Nurlina Pasaribu</div>
+                    <div class="position">Inspector · 8 Years</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/febru.jpg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Februari Gultom</div>
+                    <div class="position">Inspector · 2 Years</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/sarni.jpg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Sarni Agustina Saragih</div>
+                    <div class="position">Inspector · 2 Years</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/meni.jpg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Meni Panjaitan</div>
+                    <div class="position">Inspector · 1 Years</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/lia.jpg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Fria Natalia Purba</div>
+                    <div class="position">Inspector · 7 Months</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/meri.png" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Merina Gultom</div>
+                    <div class="position">Inspector · 4 Months</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/angelina.jpg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Angelina Dwi</div>
+                    <div class="position">Inspector · 4 Months</div>
+                </div>
+                <div class="card card-l3">
+                    <img src="images/andra.jpg" class="photo" onerror="this.style.background='#dce8dc'">
+                    <div class="name">Andra Fernando Siahaan</div>
+                    <div class="position">Inspector · 1 Months</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-indicator">
+            <div class="page-label">Halaman 3 • Team B</div>
+            <div class="dot" id="dot3-0"></div>
+            <div class="dot" id="dot3-1"></div>
+            <div class="dot active" id="dot3-2"></div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+   RUNNING TEXT
+===================================================== -->
+<div class="running-text">
+    <span>
+        ✦ WIK Group Organization Dashboard &nbsp;·&nbsp; Quality First &nbsp;·&nbsp; Lean Manufacturing &nbsp;·&nbsp; Operational Excellence &nbsp;·&nbsp; Customer Satisfaction &nbsp;·&nbsp; Industry 4.0 &nbsp;·&nbsp; Continuous Improvement &nbsp;·&nbsp; Zero Defect Culture &nbsp;·&nbsp; Team Work &nbsp;·&nbsp; Kaizen &nbsp;·&nbsp; 5S Discipline ✦
+    </span>
+</div>
+
+<script>
+/* =====================================================
+   PAGE ROTATION
+===================================================== */
+const pages = document.querySelectorAll('.page');
+const totalPages = pages.length;
+let currentPage = 0;
+
+const dotSets = [
+    [document.getElementById('dot-0'), document.getElementById('dot-1'), document.getElementById('dot-2')],
+    [document.getElementById('dot2-0'), document.getElementById('dot2-1'), document.getElementById('dot2-2')],
+    [document.getElementById('dot3-0'), document.getElementById('dot3-1'), document.getElementById('dot3-2')],
+];
+
+function showPage(index) {
+    pages.forEach((page, i) => {
+        page.classList.toggle('active', i === index);
+    });
+}
+
+setInterval(() => {
+    currentPage = (currentPage + 1) % totalPages;
+    showPage(currentPage);
+}, 10000);
+
+/* =====================================================
+   CLOCK
+===================================================== */
+function updateClock() {
+    const now = new Date();
+    const time = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const date = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    document.querySelectorAll('.clock').forEach(clock => {
+        clock.innerHTML = `<div class="clock-time">${time}</div><div class="clock-date">${date}</div>`;
+    });
+}
+setInterval(updateClock, 1000);
+updateClock();
+</script>
+</body>
+</html>
