@@ -10,20 +10,68 @@
 <style>
 
 /* =====================================================
+   CSS VARIABLES — ubah di sini untuk scaling global
+   
+   Skala otomatis:
+   --scale   → font, padding, border-radius
+   --photo-l1, --photo-l2, --photo-l3 → ukuran foto
+   --gap-l2  → gap antara Kevin & Roni (level 2)
+   --gap-l3  → gap antara staff (level 3)
+   --gap-grid → gap inspector grid halaman 2 & 3
+===================================================== */
+:root {
+    --scale: 1;
+
+    /* Foto sizes */
+    --photo-l1: clamp(70px,  10vmin, 160px);
+    --photo-l2: clamp(58px,  8vmin,  130px);
+    --photo-l3: clamp(48px,  6.5vmin, 110px);
+
+    /* Card sizes */
+    --card-l1-w: clamp(160px, 18vw, 300px);
+    --card-l2-w: clamp(140px, 15vw, 260px);
+    --card-l3-w: clamp(120px, 13vw, 220px);
+
+    /* Gaps */
+    --gap-l2:   clamp(40px,  12vw,  220px);
+    --gap-l3:   clamp(10px,  5vw,   90px);
+    --gap-grid: clamp(12px,  3vw,   60px);
+
+    /* Connector lines */
+    --line-v-short:  clamp(12px, 2vh, 28px);
+    --line-v-medium: clamp(16px, 3vh, 38px);
+    --line-h-l2:     clamp(180px, 30vw, 560px);
+    --line-h-l3:     clamp(300px, 60vw, 1100px);
+
+    /* Typography */
+    --font-name-l1:  clamp(13px, 1.6vw, 22px);
+    --font-name-l2:  clamp(11px, 1.3vw, 18px);
+    --font-name-l3:  clamp(10px, 1.1vw, 16px);
+    --font-pos:      clamp(9px,  0.9vw, 13px);
+    --font-title:    clamp(14px, 2.2vw, 32px);
+    --font-clock:    clamp(16px, 2.4vw, 32px);
+    --font-clock-d:  clamp(8px,  0.8vw, 12px);
+
+    /* Spacing */
+    --header-h:      clamp(52px, 7vh, 80px);
+    --content-pad:   clamp(10px, 2vw, 30px);
+    --card-pad-l1:   clamp(10px, 1.5vw, 20px);
+    --card-pad-l3:   clamp(8px,  1.2vw, 14px);
+    --border-top:    clamp(4px, 0.5vw, 6px);
+    --border-r:      clamp(10px, 1.2vw, 16px);
+}
+
+/* =====================================================
    RESET
 ===================================================== */
 *, *::before, *::after {
-    margin: 0;
-    padding: 0;
+    margin: 0; padding: 0;
     box-sizing: border-box;
 }
-
 html, body {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     overflow: hidden;
 }
-
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     background: #f0f4f0;
@@ -41,16 +89,13 @@ body {
     position: relative;
     overflow: hidden;
 }
-
-.page.active {
-    display: flex;
-}
+.page.active { display: flex; }
 
 /* =====================================================
    HEADER
 ===================================================== */
 .header {
-    height: 70px;
+    height: var(--header-h);
     background: linear-gradient(90deg, #003d1f 0%, #005a2e 60%, #006b36 100%);
     border-bottom: 3px solid #22c55e;
     display: flex;
@@ -61,45 +106,42 @@ body {
     box-shadow: 0 4px 20px rgba(0,69,38,0.3);
 }
 
-.logo {
-    position: absolute;
-    left: 24px;
-    height: 40px;
-}
-
 .logo-placeholder {
     position: absolute;
-    left: 24px;
-    height: 40px;
+    left: clamp(12px, 2vw, 28px);
+    height: calc(var(--header-h) * 0.6);
     background: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    padding: 6px 14px;
+    border-radius: clamp(6px, 0.8vw, 10px);
+    padding: clamp(4px, 0.6vw, 8px) clamp(8px, 1.2vw, 16px);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: clamp(5px, 0.8vw, 10px);
 }
-
 .logo-wik {
-    font-size: 22px;
+    font-size: clamp(14px, 2vw, 26px);
     font-weight: 800;
     color: white;
     letter-spacing: 1px;
 }
-
 .logo-sub {
-    font-size: 9px;
+    font-size: clamp(7px, 0.7vw, 10px);
     font-weight: 400;
     color: rgba(255,255,255,0.75);
     line-height: 1.3;
 }
 
+/* Hide sub text on very small screens */
+@media (max-width: 500px) { .logo-sub { display: none; } }
+
 .title {
     color: white;
-    font-size: 26px;
+    font-size: var(--font-title);
     font-weight: 800;
-    letter-spacing: 2px;
+    letter-spacing: clamp(0.5px, 0.2vw, 2.5px);
     text-transform: uppercase;
     text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    text-align: center;
+    padding: 0 clamp(120px, 18vw, 260px);
 }
 
 /* =====================================================
@@ -107,25 +149,23 @@ body {
 ===================================================== */
 .clock {
     position: absolute;
-    right: 20px;
+    right: clamp(10px, 1.5vw, 24px);
     background: white;
-    padding: 8px 16px;
-    border-radius: 12px;
+    padding: clamp(5px, 0.8vh, 10px) clamp(8px, 1.2vw, 18px);
+    border-radius: clamp(8px, 1vw, 14px);
     text-align: center;
     box-shadow: 0 4px 16px rgba(0,0,0,0.12);
     color: #004526;
-    min-width: 170px;
+    min-width: clamp(100px, 14vw, 190px);
 }
-
 .clock-time {
-    font-size: 26px;
+    font-size: var(--font-clock);
     font-weight: 800;
     line-height: 1;
     letter-spacing: 1px;
 }
-
 .clock-date {
-    font-size: 11px;
+    font-size: var(--font-clock-d);
     font-weight: 600;
     color: #166534;
     margin-top: 2px;
@@ -139,71 +179,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 16px 30px 42px;
+    padding: clamp(10px, 2vh, 22px) var(--content-pad) clamp(36px, 5vh, 50px);
     overflow: hidden;
     position: relative;
-}
-
-/* =====================================================
-   ORG TREE — PAGE 1
-===================================================== */
-
-/* Level 1 — top node */
-.org-level1 {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 0;
-}
-
-/* Connector: level1 → level2 */
-.connector-v {
-    width: 3px;
-    background: linear-gradient(180deg, #16a34a, #22c55e);
-    align-self: center;
-}
-.connector-v.short { height: 24px; }
-.connector-v.medium { height: 32px; }
-
-.connector-h {
-    height: 3px;
-    background: linear-gradient(90deg, #16a34a, #22c55e, #16a34a);
-    border-radius: 2px;
-}
-
-/* Row wrapper for level 2 */
-.org-level2-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.org-level2-nodes {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0;
-}
-
-.org-branch {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Level 3 row */
-.org-level3-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-.org-level3-nodes {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 18px;
-    flex-wrap: nowrap;
 }
 
 /* =====================================================
@@ -211,7 +189,7 @@ body {
 ===================================================== */
 .card {
     background: white;
-    border-radius: 14px;
+    border-radius: var(--border-r);
     border: 1px solid #e2ede2;
     box-shadow: 0 6px 20px rgba(0,80,40,0.08), 0 2px 6px rgba(0,0,0,0.04);
     display: flex;
@@ -219,42 +197,37 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 14px 12px 12px;
     position: relative;
     transition: transform 0.25s, box-shadow 0.25s;
     overflow: hidden;
 }
-
 .card::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 5px;
-    border-radius: 14px 14px 0 0;
+    height: var(--border-top);
+    border-radius: var(--border-r) var(--border-r) 0 0;
 }
-
 .card:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 32px rgba(0,80,40,0.14);
 }
 
-/* Level 1 card */
 .card-l1 {
-    width: 260px;
-    padding: 18px 16px 14px;
+    width: var(--card-l1-w);
+    padding: var(--card-pad-l1);
 }
 .card-l1::before { background: linear-gradient(90deg, #003d1f, #005a2e); }
 
-/* Level 2 card */
 .card-l2 {
-    width: 220px;
+    width: var(--card-l2-w);
+    padding: clamp(8px, 1.2vw, 16px);
 }
 .card-l2::before { background: linear-gradient(90deg, #166534, #15803d); }
 
-/* Level 3 card (staff) */
 .card-l3 {
-    width: 185px;
-    padding: 12px 10px 10px;
+    width: var(--card-l3-w);
+    padding: var(--card-pad-l3);
 }
 .card-l3::before { background: linear-gradient(90deg, #16a34a, #22c55e); }
 
@@ -265,16 +238,16 @@ body {
     border-radius: 50%;
     object-fit: cover;
     object-position: center top;
-    border: 3px solid white;
+    border: clamp(2px, 0.3vw, 4px) solid white;
     box-shadow: 0 4px 14px rgba(0,0,0,0.12), 0 0 0 2px #22c55e;
-    margin-bottom: 10px;
+    margin-bottom: clamp(6px, 1vh, 12px);
     background: #e2ede2;
     flex-shrink: 0;
+    display: block;
 }
-
-.card-l1 .photo { width: 200px; height: 200x; } /* foto Brian Togu (top) */
-.card-l2 .photo { width: 150px; height: 150px; } /* foto Kevin & Roni */
-.card-l3 .photo { width: 120px; height: 120px; margin-bottom: 8px; } /* foto Staff & Inspector */
+.card-l1 .photo { width: var(--photo-l1); height: var(--photo-l1); }
+.card-l2 .photo { width: var(--photo-l2); height: var(--photo-l2); }
+.card-l3 .photo { width: var(--photo-l3); height: var(--photo-l3); margin-bottom: clamp(4px, 0.8vh, 9px); }
 
 /* =====================================================
    TEXT
@@ -283,20 +256,36 @@ body {
     font-weight: 700;
     color: #0f2d0f;
     line-height: 1.2;
-    margin-bottom: 4px;
+    margin-bottom: clamp(2px, 0.4vh, 5px);
 }
-.card-l1 .name { font-size: 18px; }
-.card-l2 .name { font-size: 16px; }
-.card-l3 .name { font-size: 14px; }
+.card-l1 .name { font-size: var(--font-name-l1); }
+.card-l2 .name { font-size: var(--font-name-l2); }
+.card-l3 .name { font-size: var(--font-name-l3); }
 
 .position {
     font-weight: 500;
     color: #4a6b4a;
     line-height: 1.3;
+    font-size: var(--font-pos);
 }
-.card-l1 .position { font-size: 12px; }
-.card-l2 .position { font-size: 11px; }
-.card-l3 .position { font-size: 10px; }
+
+/* =====================================================
+   CONNECTORS
+===================================================== */
+.connector-v {
+    width: clamp(2px, 0.3vw, 4px);
+    background: linear-gradient(180deg, #16a34a, #22c55e);
+    align-self: center;
+    flex-shrink: 0;
+}
+.connector-v.short  { height: var(--line-v-short); }
+.connector-v.medium { height: var(--line-v-medium); }
+
+.org-branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 /* =====================================================
    PAGE 2 & 3 TEAM LAYOUT
@@ -307,22 +296,37 @@ body {
     align-items: center;
     width: 100%;
     flex: 1;
+    min-height: 0;
 }
-
 .team-leader-area {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 0;
 }
-
 .team-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 60px; /* ubah gap antara semua inspector */
-    max-width: 1200px;
-    padding: 0 20px;
+    gap: var(--gap-grid);
+    max-width: 95vw;
+    padding: 0 clamp(10px, 2vw, 30px);
+}
+
+/* =====================================================
+   SECTION LABEL
+===================================================== */
+.section-label {
+    font-size: clamp(8px, 0.75vw, 11px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #4a7a4a;
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 20px;
+    padding: clamp(2px, 0.3vh, 4px) clamp(8px, 1vw, 16px);
+    margin-bottom: clamp(6px, 1vh, 12px);
+    flex-shrink: 0;
 }
 
 /* =====================================================
@@ -330,35 +334,30 @@ body {
 ===================================================== */
 .page-indicator {
     position: absolute;
-    bottom: 46px;
-    right: 30px;
+    bottom: clamp(38px, 5vh, 50px);
+    right: clamp(14px, 2vw, 32px);
     display: flex;
     gap: 8px;
     align-items: center;
 }
-
 .dot {
-    width: 8px;
-    height: 8px;
+    width: clamp(6px, 0.6vw, 9px);
+    height: clamp(6px, 0.6vw, 9px);
     border-radius: 50%;
     background: #c8dcc8;
     transition: background 0.3s, transform 0.3s;
 }
-.dot.active {
-    background: #16a34a;
-    transform: scale(1.3);
-}
-
+.dot.active { background: #16a34a; transform: scale(1.3); }
 .page-label {
     background: rgba(22,101,52,0.1);
     color: #166534;
-    padding: 5px 14px;
+    padding: 4px clamp(8px, 1vw, 16px);
     border-radius: 20px;
-    font-size: 11px;
+    font-size: clamp(9px, 0.8vw, 12px);
     font-weight: 700;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    margin-right: 6px;
+    margin-right: 4px;
 }
 
 /* =====================================================
@@ -368,63 +367,144 @@ body {
     position: fixed;
     bottom: 0; left: 0;
     width: 100%;
-    height: 36px;
+    height: clamp(28px, 4vh, 38px);
     background: linear-gradient(90deg, #003d1f, #005a2e);
     overflow: hidden;
     display: flex;
     align-items: center;
     z-index: 9999;
     border-top: 2px solid rgba(34,197,94,0.4);
+    flex-shrink: 0;
 }
-
 .running-text span {
     white-space: nowrap;
     padding-left: 100%;
     animation: marquee 22s linear infinite;
     color: rgba(255,255,255,0.9);
-    font-size: 13px;
+    font-size: clamp(10px, 1vw, 14px);
     font-weight: 600;
     letter-spacing: 0.5px;
 }
-
 @keyframes marquee {
     0%   { transform: translateX(0%); }
     100% { transform: translateX(-100%); }
 }
 
 /* =====================================================
-   FADE IN ANIMATION
+   ANIMATIONS
 ===================================================== */
 .page.active .card {
-    animation: fadeUp 0.5s ease both;
+    animation: fadeUp 0.45s ease both;
 }
 .page.active .card:nth-child(1) { animation-delay: 0.05s; }
-.page.active .card:nth-child(2) { animation-delay: 0.12s; }
-.page.active .card:nth-child(3) { animation-delay: 0.19s; }
-.page.active .card:nth-child(4) { animation-delay: 0.26s; }
-.page.active .card:nth-child(5) { animation-delay: 0.33s; }
-.page.active .card:nth-child(6) { animation-delay: 0.40s; }
-.page.active .card:nth-child(7) { animation-delay: 0.47s; }
-
+.page.active .card:nth-child(2) { animation-delay: 0.10s; }
+.page.active .card:nth-child(3) { animation-delay: 0.15s; }
+.page.active .card:nth-child(4) { animation-delay: 0.20s; }
+.page.active .card:nth-child(5) { animation-delay: 0.25s; }
+.page.active .card:nth-child(6) { animation-delay: 0.30s; }
+.page.active .card:nth-child(7) { animation-delay: 0.35s; }
+.page.active .card:nth-child(8) { animation-delay: 0.40s; }
+.page.active .card:nth-child(9) { animation-delay: 0.45s; }
 @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
+    from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
 /* =====================================================
-   SEPARATOR LABEL (section header)
+   TV / LARGE SCREEN (≥1920px)
+   Layar TV biasanya 1920×1080 atau 3840×2160
 ===================================================== */
-.section-label {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #4a7a4a;
-    background: rgba(34,197,94,0.08);
-    border: 1px solid rgba(34,197,94,0.2);
-    border-radius: 20px;
-    padding: 3px 14px;
-    margin-bottom: 10px;
+@media (min-width: 1920px) {
+    :root {
+        --photo-l1: clamp(130px, 9vmin, 200px);
+        --photo-l2: clamp(100px, 7.5vmin, 160px);
+        --photo-l3: clamp(80px,  6.5vmin, 130px);
+        --card-l1-w: clamp(240px, 16vw, 360px);
+        --card-l2-w: clamp(200px, 14vw, 300px);
+        --card-l3-w: clamp(170px, 12vw, 260px);
+        --gap-l2: clamp(100px, 14vw, 280px);
+        --gap-l3: clamp(30px,  6vw,  120px);
+        --gap-grid: clamp(24px, 3vw, 70px);
+        --font-name-l1: clamp(18px, 1.6vw, 28px);
+        --font-name-l2: clamp(15px, 1.3vw, 22px);
+        --font-name-l3: clamp(12px, 1.1vw, 18px);
+        --font-pos:     clamp(11px, 0.85vw, 15px);
+        --font-title:   clamp(22px, 2vw, 40px);
+        --font-clock:   clamp(26px, 2.2vw, 40px);
+        --font-clock-d: clamp(10px, 0.75vw, 14px);
+        --header-h:     clamp(70px, 8vh, 96px);
+        --line-h-l2:    clamp(300px, 32vw, 680px);
+        --line-h-l3:    clamp(500px, 65vw, 1300px);
+    }
+}
+
+/* =====================================================
+   4K / ULTRA HD (≥3000px)
+===================================================== */
+@media (min-width: 3000px) {
+    :root {
+        --photo-l1: 240px;
+        --photo-l2: 190px;
+        --photo-l3: 155px;
+        --card-l1-w: 420px;
+        --card-l2-w: 350px;
+        --card-l3-w: 300px;
+        --gap-l2: 340px;
+        --gap-l3: 150px;
+        --gap-grid: 80px;
+        --font-name-l1: 32px;
+        --font-name-l2: 26px;
+        --font-name-l3: 22px;
+        --font-pos:     18px;
+        --font-title:   48px;
+        --font-clock:   50px;
+        --font-clock-d: 18px;
+        --header-h:     110px;
+        --line-h-l2:    840px;
+        --line-h-l3:    1600px;
+    }
+}
+
+/* =====================================================
+   TABLET (≤1024px)
+===================================================== */
+@media (max-width: 1024px) {
+    :root {
+        --photo-l1: clamp(60px, 11vmin, 100px);
+        --photo-l2: clamp(50px, 9vmin,  85px);
+        --photo-l3: clamp(44px, 7.5vmin, 72px);
+        --card-l1-w: clamp(140px, 22vw, 210px);
+        --card-l2-w: clamp(120px, 19vw, 185px);
+        --card-l3-w: clamp(100px, 16vw, 160px);
+        --gap-l2: clamp(30px, 10vw, 120px);
+        --gap-l3: clamp(8px, 3.5vw, 40px);
+        --gap-grid: clamp(10px, 2.5vw, 30px);
+        --line-h-l2: clamp(150px, 28vw, 380px);
+        --line-h-l3: clamp(250px, 55vw, 700px);
+    }
+}
+
+/* =====================================================
+   MOBILE (≤600px)
+===================================================== */
+@media (max-width: 600px) {
+    :root {
+        --photo-l1: 70px;
+        --photo-l2: 58px;
+        --photo-l3: 48px;
+        --card-l1-w: 140px;
+        --card-l2-w: 120px;
+        --card-l3-w: 104px;
+        --gap-l2: 24px;
+        --gap-l3: 8px;
+        --gap-grid: 8px;
+        --font-title: 12px;
+        --header-h: 50px;
+        --line-h-l2: 152px;
+        --line-h-l3: 270px;
+    }
+    .title { padding: 0 110px 0 80px; }
+    .logo-sub { display: none; }
 }
 
 </style>
@@ -447,8 +527,8 @@ body {
 
     <div class="content">
 
-        <!-- LEVEL 1: Quality Engineer -->
-        <div class="org-level1" style="margin-bottom:0">
+        <!-- LEVEL 1 -->
+        <div style="display:flex; justify-content:center;">
             <div class="card card-l1">
                 <img src="images/brian-togu.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
                 <div class="name">Brian Togu</div>
@@ -456,18 +536,17 @@ body {
             </div>
         </div>
 
-        <!-- V connector down -->
         <div class="connector-v short"></div>
 
-        <!-- H connector spanning level-2 -->
-        <div style="display:flex; align-items:center; width:480px; margin-bottom:0">
-            <div style="flex:1; height:3px; background:linear-gradient(90deg,transparent,#16a34a)"></div>
-            <div style="width:3px; height:3px; background:#16a34a; border-radius:50%"></div>
-            <div style="flex:1; height:3px; background:linear-gradient(90deg,#16a34a,transparent)"></div>
+        <!-- H line L1→L2 -->
+        <div style="display:flex; align-items:center; width:var(--line-h-l2);">
+            <div style="flex:1; height:clamp(2px,0.25vw,3px); background:linear-gradient(90deg,transparent,#16a34a)"></div>
+            <div style="width:clamp(2px,0.25vw,3px); height:clamp(2px,0.25vw,3px); background:#16a34a; border-radius:50%"></div>
+            <div style="flex:1; height:clamp(2px,0.25vw,3px); background:linear-gradient(90deg,#16a34a,transparent)"></div>
         </div>
 
-        <!-- LEVEL 2: Jr Engineers -->
-        <div style="display:flex; gap:180px; margin-bottom:0; align-items:flex-start;"> <!-- untuk ubah gap nya (level 2)) -->
+        <!-- LEVEL 2 -->
+        <div style="display:flex; gap:var(--gap-l2); align-items:flex-start;">
             <div class="org-branch">
                 <div class="connector-v short"></div>
                 <div class="card card-l2">
@@ -486,19 +565,17 @@ body {
             </div>
         </div>
 
-        <!-- V connector down to staff -->
         <div class="connector-v medium"></div>
 
-        <!-- H connector spanning level-3 -->
-        <div style="display:flex; align-items:center; width:1000px; margin-bottom:0">
-            <div style="flex:1; height:3px; background:linear-gradient(90deg,transparent,#22c55e)"></div>
-            <div style="width:3px; height:3px; background:#22c55e; border-radius:50%"></div>
-            <div style="flex:1; height:3px; background:linear-gradient(90deg,#22c55e,transparent)"></div>
+        <!-- H line L2→L3 -->
+        <div style="display:flex; align-items:center; width:var(--line-h-l3);">
+            <div style="flex:1; height:clamp(2px,0.25vw,3px); background:linear-gradient(90deg,transparent,#22c55e)"></div>
+            <div style="width:clamp(2px,0.25vw,3px); height:clamp(2px,0.25vw,3px); background:#22c55e; border-radius:50%"></div>
+            <div style="flex:1; height:clamp(2px,0.25vw,3px); background:linear-gradient(90deg,#22c55e,transparent)"></div>
         </div>
 
         <!-- LEVEL 3 -->
-        <div style="display:flex; gap:90px; align-items:flex-start; flex-wrap:nowrap;"> <!-- untuk ubah gap (level 3) -->
-
+        <div style="display:flex; gap:var(--gap-l3); align-items:flex-start; flex-wrap:nowrap;">
             <div class="org-branch">
                 <div class="connector-v short"></div>
                 <div class="card card-l3">
@@ -515,7 +592,6 @@ body {
                     <div class="position">Inspector · 2 Years</div>
                 </div>
             </div>
-            
             <div class="org-branch">
                 <div class="connector-v short"></div>
                 <div class="card card-l3">
@@ -534,7 +610,6 @@ body {
             </div>
         </div>
 
-        <!-- Page indicator -->
         <div class="page-indicator">
             <div class="page-label">Halaman 1 • Engineering</div>
             <div class="dot active" id="dot-0"></div>
@@ -546,7 +621,7 @@ body {
 </div>
 
 <!-- =====================================================
-   PAGE 2 — Team Leader A
+   PAGE 2 — IPQC Team A
 ===================================================== -->
 <div class="page" id="page-2">
 
@@ -555,14 +630,13 @@ body {
             <div class="logo-wik">WIK</div>
             <div class="logo-sub">Technology<br>attuned to Nature</div>
         </div>
-        <div class="title"> IPQC TEAM A</div>
+        <div class="title">IPQC TEAM A</div>
         <div class="clock" id="clock-2"></div>
     </div>
 
     <div class="content">
         <div class="team-wrapper">
 
-            <!-- Leader -->
             <div class="team-leader-area">
                 <div class="section-label">Team Leader</div>
                 <div class="card card-l1">
@@ -572,12 +646,10 @@ body {
                 </div>
             </div>
 
-            <!-- Connector -->
-            <div class="connector-v" style="height:28px;"></div>
-            <div style="width:3px; height:3px; background:#22c55e; border-radius:50%; margin-bottom:8px;"></div>
-            <div class="section-label" style="margin-bottom:14px;">Inspectors</div>
+            <div class="connector-v" style="height:var(--line-v-medium);"></div>
+            <div style="width:clamp(2px,0.3vw,4px); height:clamp(2px,0.3vw,4px); background:#22c55e; border-radius:50%; margin-bottom:clamp(5px,0.8vh,10px);"></div>
+            <div class="section-label" style="margin-bottom:clamp(8px,1.2vh,16px);">Inspectors</div>
 
-            <!-- Inspector grid -->
             <div class="team-grid">
                 <div class="card card-l3">
                     <img src="images/henna.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
@@ -602,7 +674,7 @@ body {
                 <div class="card card-l3">
                     <img src="images/intan.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
                     <div class="name">Intan Nona</div>
-                    <div class="position">Inspector · 1 Years</div>
+                    <div class="position">Inspector · 1 Year</div>
                 </div>
                 <div class="card card-l3">
                     <img src="images/reo.jpeg" class="photo" onerror="this.style.background='#dce8dc'">
@@ -623,7 +695,7 @@ body {
         </div>
 
         <div class="page-indicator">
-            <div class="page-label">Pages 2 • Team A</div>
+            <div class="page-label">Halaman 2 • Team A</div>
             <div class="dot" id="dot2-0"></div>
             <div class="dot active" id="dot2-1"></div>
             <div class="dot" id="dot2-2"></div>
@@ -632,7 +704,7 @@ body {
 </div>
 
 <!-- =====================================================
-   PAGE 3 — Team Leader B
+   PAGE 3 — IPQC Team B
 ===================================================== -->
 <div class="page" id="page-3">
 
@@ -648,7 +720,6 @@ body {
     <div class="content">
         <div class="team-wrapper">
 
-            <!-- Leader -->
             <div class="team-leader-area">
                 <div class="section-label">Team Leader</div>
                 <div class="card card-l1">
@@ -658,12 +729,10 @@ body {
                 </div>
             </div>
 
-            <!-- Connector -->
-            <div class="connector-v" style="height:28px;"></div>
-            <div style="width:3px; height:3px; background:#22c55e; border-radius:50%; margin-bottom:8px;"></div>
-            <div class="section-label" style="margin-bottom:14px;">Inspectors</div>
+            <div class="connector-v" style="height:var(--line-v-medium);"></div>
+            <div style="width:clamp(2px,0.3vw,4px); height:clamp(2px,0.3vw,4px); background:#22c55e; border-radius:50%; margin-bottom:clamp(5px,0.8vh,10px);"></div>
+            <div class="section-label" style="margin-bottom:clamp(8px,1.2vh,16px);">Inspectors</div>
 
-            <!-- Inspector grid -->
             <div class="team-grid">
                 <div class="card card-l3">
                     <img src="images/netty.jpg" class="photo" onerror="this.style.background='#dce8dc'">
@@ -683,7 +752,7 @@ body {
                 <div class="card card-l3">
                     <img src="images/meni.jpg" class="photo" onerror="this.style.background='#dce8dc'">
                     <div class="name">Meni Panjaitan</div>
-                    <div class="position">Inspector · 1 Years</div>
+                    <div class="position">Inspector · 1 Year</div>
                 </div>
                 <div class="card card-l3">
                     <img src="images/lia.jpg" class="photo" onerror="this.style.background='#dce8dc'">
@@ -703,7 +772,7 @@ body {
                 <div class="card card-l3">
                     <img src="images/andra.jpg" class="photo" onerror="this.style.background='#dce8dc'">
                     <div class="name">Andra Fernando Siahaan</div>
-                    <div class="position">Inspector · 1 Months</div>
+                    <div class="position">Inspector · 1 Month</div>
                 </div>
             </div>
         </div>
@@ -717,9 +786,7 @@ body {
     </div>
 </div>
 
-<!-- =====================================================
-   RUNNING TEXT
-===================================================== -->
+<!-- RUNNING TEXT -->
 <div class="running-text">
     <span>
         ✦ WIK Group Organization Dashboard &nbsp;·&nbsp; Quality First &nbsp;·&nbsp; Lean Manufacturing &nbsp;·&nbsp; Operational Excellence &nbsp;·&nbsp; Customer Satisfaction &nbsp;·&nbsp; Industry 4.0 &nbsp;·&nbsp; Continuous Improvement &nbsp;·&nbsp; Zero Defect Culture &nbsp;·&nbsp; Team Work &nbsp;·&nbsp; Kaizen &nbsp;·&nbsp; 5S Discipline ✦
@@ -727,23 +794,13 @@ body {
 </div>
 
 <script>
-/* =====================================================
-   PAGE ROTATION
-===================================================== */
+/* PAGE ROTATION */
 const pages = document.querySelectorAll('.page');
 const totalPages = pages.length;
 let currentPage = 0;
 
-const dotSets = [
-    [document.getElementById('dot-0'), document.getElementById('dot-1'), document.getElementById('dot-2')],
-    [document.getElementById('dot2-0'), document.getElementById('dot2-1'), document.getElementById('dot2-2')],
-    [document.getElementById('dot3-0'), document.getElementById('dot3-1'), document.getElementById('dot3-2')],
-];
-
 function showPage(index) {
-    pages.forEach((page, i) => {
-        page.classList.toggle('active', i === index);
-    });
+    pages.forEach((page, i) => page.classList.toggle('active', i === index));
 }
 
 setInterval(() => {
@@ -751,15 +808,13 @@ setInterval(() => {
     showPage(currentPage);
 }, 10000);
 
-/* =====================================================
-   CLOCK
-===================================================== */
+/* CLOCK */
 function updateClock() {
     const now = new Date();
     const time = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const date = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    document.querySelectorAll('.clock').forEach(clock => {
-        clock.innerHTML = `<div class="clock-time">${time}</div><div class="clock-date">${date}</div>`;
+    document.querySelectorAll('.clock').forEach(c => {
+        c.innerHTML = `<div class="clock-time">${time}</div><div class="clock-date">${date}</div>`;
     });
 }
 setInterval(updateClock, 1000);
