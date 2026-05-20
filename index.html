@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=1920">
 <title>IPQC Organization Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,43 +22,50 @@
 :root {
     --scale: 1;
 
-    /* Foto sizes */
-    --photo-l1: clamp(70px,  10vmin, 160px);
-    --photo-l2: clamp(58px,  8vmin,  130px);
-    --photo-l3: clamp(48px,  6.5vmin, 110px);
+    /* ============================================
+       FOTO — ubah angka ini untuk atur ukuran foto
+       l1 = Brian/Leader, l2 = Jr Engineer, l3 = Staff/Inspector
+    ============================================ */
+    --photo-l1: 13vmin;   /* ~140px di 1080p, ~187px di 1440p */
+    --photo-l2: 11vmin;
+    --photo-l3: 9.5vmin;
 
-    /* Card sizes */
-    --card-l1-w: clamp(160px, 18vw, 300px);
-    --card-l2-w: clamp(140px, 15vw, 260px);
-    --card-l3-w: clamp(120px, 13vw, 220px);
+    /* ============================================
+       CARD WIDTH
+    ============================================ */
+    --card-l1-w: 20vw;
+    --card-l2-w: 17vw;
+    --card-l3-w: 14.5vw;
 
-    /* Gaps */
-    --gap-l2:   clamp(40px,  12vw,  220px);
-    --gap-l3:   clamp(10px,  5vw,   90px);
-    --gap-grid: clamp(12px,  3vw,   60px);
+    /* ============================================
+       GAPS
+    ============================================ */
+    --gap-l2:   14vw;
+    --gap-l3:   5.5vw;
+    --gap-grid: 3vw;
 
-    /* Connector lines */
-    --line-v-short:  clamp(12px, 2vh, 28px);
-    --line-v-medium: clamp(16px, 3vh, 38px);
-    --line-h-l2:     clamp(180px, 30vw, 560px);
-    --line-h-l3:     clamp(300px, 60vw, 1100px);
+    /* CONNECTOR LINES */
+    --line-v-short:  2.2vh;
+    --line-v-medium: 3.2vh;
+    --line-h-l2:     32vw;
+    --line-h-l3:     63vw;
 
-    /* Typography */
-    --font-name-l1:  clamp(13px, 1.6vw, 22px);
-    --font-name-l2:  clamp(11px, 1.3vw, 18px);
-    --font-name-l3:  clamp(10px, 1.1vw, 16px);
-    --font-pos:      clamp(9px,  0.9vw, 13px);
-    --font-title:    clamp(14px, 2.2vw, 32px);
-    --font-clock:    clamp(16px, 2.4vw, 32px);
-    --font-clock-d:  clamp(8px,  0.8vw, 12px);
+    /* TYPOGRAPHY */
+    --font-name-l1:  1.7vw;
+    --font-name-l2:  1.4vw;
+    --font-name-l3:  1.2vw;
+    --font-pos:      1vw;
+    --font-title:    2.4vw;
+    --font-clock:    2.6vw;
+    --font-clock-d:  0.85vw;
 
-    /* Spacing */
-    --header-h:      clamp(52px, 7vh, 80px);
-    --content-pad:   clamp(10px, 2vw, 30px);
-    --card-pad-l1:   clamp(10px, 1.5vw, 20px);
-    --card-pad-l3:   clamp(8px,  1.2vw, 14px);
-    --border-top:    clamp(4px, 0.5vw, 6px);
-    --border-r:      clamp(10px, 1.2vw, 16px);
+    /* SPACING */
+    --header-h:      8vh;
+    --content-pad:   2.5vw;
+    --card-pad-l1:   1.8vw;
+    --card-pad-l3:   1.4vw;
+    --border-top:    0.5vw;
+    --border-r:      1.2vw;
 }
 
 /* =====================================================
@@ -411,30 +418,38 @@ body {
 }
 
 /* =====================================================
-   TV / LARGE SCREEN (≥1920px)
-   Layar TV biasanya 1920×1080 atau 3840×2160
+   TV FULL HD (≥1920px) — 50" TV
+   Semua pakai vw/vh supaya scale ke layar TV
 ===================================================== */
 @media (min-width: 1920px) {
     :root {
-        --photo-l1: clamp(160px, 12vmin, 260px);
-        --photo-l2: clamp(130px, 10vmin, 230px);
-        --photo-l3: clamp(100px,  8.5vmin, 100px);
-        --card-l1-w: clamp(240px, 16vw, 460px);
-        --card-l2-w: clamp(200px, 14vw, 380px);
-        --card-l3-w: clamp(170px, 12vw, 320px);
-        --gap-l2: clamp(100px, 14vw, 280px);
-        --gap-l3: clamp(30px,  6vw,  120px);
-        --gap-grid: clamp(24px, 3vw, 70px);
-        --font-name-l1: clamp(18px, 1.6vw, 28px);
-        --font-name-l2: clamp(15px, 1.3vw, 22px);
-        --font-name-l3: clamp(12px, 1.1vw, 18px);
-        --font-pos:     clamp(11px, 0.85vw, 15px);
-        --font-title:   clamp(22px, 2vw, 40px);
-        --font-clock:   clamp(26px, 2.2vw, 40px);
-        --font-clock-d: clamp(10px, 0.75vw, 14px);
-        --header-h:     clamp(70px, 8vh, 96px);
-        --line-h-l2:    clamp(300px, 32vw, 680px);
-        --line-h-l3:    clamp(500px, 65vw, 1300px);
+        --photo-l1: 16vmin;
+        --photo-l2: 13vmin;
+        --photo-l3: 11vmin;
+
+        --card-l1-w: 22vw;
+        --card-l2-w: 19vw;
+        --card-l3-w: 16vw;
+
+        --gap-l2:   15vw;
+        --gap-l3:   6vw;
+        --gap-grid: 3.5vw;
+
+        --line-h-l2:     35vw;
+        --line-h-l3:     66vw;
+        --line-v-short:  2.5vh;
+        --line-v-medium: 3.5vh;
+
+        --font-name-l1:  1.9vw;
+        --font-name-l2:  1.55vw;
+        --font-name-l3:  1.3vw;
+        --font-pos:      1.05vw;
+        --font-title:    2.6vw;
+        --font-clock:    2.8vw;
+        --font-clock-d:  0.9vw;
+        --header-h:      9vh;
+        --card-pad-l1:   2vw;
+        --card-pad-l3:   1.6vw;
     }
 }
 
@@ -443,25 +458,26 @@ body {
 ===================================================== */
 @media (min-width: 3000px) {
     :root {
-        --photo-l1: 240px;
-        --photo-l2: 190px;
-        --photo-l3: 155px;
-        --card-l1-w: 420px;
-        --card-l2-w: 350px;
-        --card-l3-w: 300px;
-        --gap-l2: 340px;
-        --gap-l3: 150px;
-        --gap-grid: 80px;
-        --font-name-l1: 32px;
-        --font-name-l2: 26px;
-        --font-name-l3: 22px;
-        --font-pos:     18px;
-        --font-title:   48px;
-        --font-clock:   50px;
-        --font-clock-d: 18px;
-        --header-h:     110px;
-        --line-h-l2:    840px;
-        --line-h-l3:    1600px;
+        --photo-l1: 17vmin;
+        --photo-l2: 14vmin;
+        --photo-l3: 12vmin;
+
+        --card-l1-w: 21vw;
+        --card-l2-w: 18vw;
+        --card-l3-w: 15.5vw;
+
+        --gap-l2:   14vw;
+        --gap-l3:   5.5vw;
+        --gap-grid: 3vw;
+
+        --font-name-l1:  1.8vw;
+        --font-name-l2:  1.5vw;
+        --font-name-l3:  1.25vw;
+        --font-pos:      1vw;
+        --font-title:    2.4vw;
+        --font-clock:    2.6vw;
+        --font-clock-d:  0.85vw;
+        --header-h:      8.5vh;
     }
 }
 
